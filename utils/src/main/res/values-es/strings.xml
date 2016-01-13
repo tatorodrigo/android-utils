@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FileSystemUtil -->
+    <string name="tattobr_utils_text_external_storage">Almacenamiento externo</string>
+    <string name="tattobr_utils_text_internal_storage">Almacenamiento interno</string>
+    <string name="tattobr_utils_yesterday">Eile</string>
+</resources>
