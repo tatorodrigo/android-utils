@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FileSystemUtil -->
+    <string name="tattobr_utils_text_external_storage">Externe opslag</string>
+    <string name="tattobr_utils_text_internal_storage">Intern geheugen</string>
+    <string name="tattobr_utils_yesterday">Gisteren</string>
+</resources>
