@@ -18,7 +18,7 @@ public class DateUtil {
         if (android.text.format.DateFormat.is24HourFormat(context)) {
             simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         } else {
-            simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            simpleDateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
         }
         return simpleDateFormat.format(time);
     }
