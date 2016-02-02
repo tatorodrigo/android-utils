@@ -13,6 +13,15 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 public class StringUtil {
+    public static String getFormatedSize(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
+        return String.format("%.2f %sB", bytes / Math.pow(unit, exp), pre);
+    }
+
+    
     public static String base64Encode(String data) {
         return base64Encode(data.getBytes(Charset.forName("UTF-8")));
     }
