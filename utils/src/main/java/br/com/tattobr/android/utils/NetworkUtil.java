@@ -12,14 +12,6 @@ import java.net.UnknownHostException;
 import java.nio.ByteOrder;
 
 public class NetworkUtil {
-    /**
-     * Neeed
-     * <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> to be added to
-     * AndroidManifest.xml
-     *
-     * @param context
-     * @return
-     */
     public static String getIpAddress(Context context) {
         String ipAddressString;
 
