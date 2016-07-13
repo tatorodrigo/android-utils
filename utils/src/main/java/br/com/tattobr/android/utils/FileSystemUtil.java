@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.support.v4.content.ContextCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class FileSystemUtil {
     public static void determineStorageOptions(Context context) {
         readVoldFile(context.getApplicationContext());
         readMounts(context.getApplicationContext());
+        readExternalFilesDirs(context.getApplicationContext());
         testAndCleanList(context.getApplicationContext());
         setProperties(context.getApplicationContext());
     }
@@ -26,7 +28,7 @@ public class FileSystemUtil {
     private static void readMounts(Context context) {
         try {
             File mountFile = new File("/proc/mounts");
-            if(mountFile.exists()){
+            if (mountFile.exists()) {
                 Scanner scanner = new Scanner(mountFile);
                 while (scanner.hasNext()) {
                     String line = scanner.nextLine();
@@ -141,9 +143,46 @@ public class FileSystemUtil {
         }
     }
 
+    private static void readExternalFilesDirs(Context context) {
+        File[] files = ContextCompat.getExternalFilesDirs(context, null);
+        int i = 0;
+        if (files != null) {
+            for (File file : files) {
+                String path = getRootFolderOnExternalFilesDir(file);
+                if (path != null && !mounts.contains(path)) {
+                    mounts.add(path);
+                }
+            }
+        }
+    }
+
+    private static String getRootFolderOnExternalFilesDir(File file) {
+        String path = null;
+        if (file != null) {
+            String lastWritablePath = null;
+            final long TOTAL_SPACE = file.getTotalSpace();
+            long totalSpace;
+            File parent = file;
+            do {
+                parent = parent.getParentFile();
+                if (parent != null) {
+                    if (parent.exists() && parent.isDirectory() && parent.canWrite()) {
+                        lastWritablePath = parent.getAbsolutePath();
+                    }
+                    totalSpace = parent.getTotalSpace();
+                    if (TOTAL_SPACE != totalSpace) {
+                        path = lastWritablePath;
+                        break;
+                    }
+                }
+            } while (parent != null);
+        }
+        return path;
+    }
+
     private static void setProperties(Context sContext) {
         /*
-		 * At this point all the paths in the list should be valid. Build the
+         * At this point all the paths in the list should be valid. Build the
 		 * public properties.
 		 */
 
@@ -191,15 +230,15 @@ public class FileSystemUtil {
         count = Math.min(labels.length, paths.length);
 
 		/*
-		 * don't need these anymore, clear the lists to reduce memory use and to
+         * don't need these anymore, clear the lists to reduce memory use and to
 		 * prepare them for the next time they're needed.
 		 */
         mounts.clear();
     }
 
     private static void testAndCleanList(Context sContext) {
-		/*
-		 * Now that we have a cleaned list of mount paths, test each one to make
+        /*
+         * Now that we have a cleaned list of mount paths, test each one to make
 		 * sure it's a valid and available path. If it is not, remove it from
 		 * the list.
 		 */
