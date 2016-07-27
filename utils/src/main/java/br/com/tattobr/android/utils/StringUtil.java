@@ -1,5 +1,7 @@
 package br.com.tattobr.android.utils;
 
+import android.support.v4.text.TextUtilsCompat;
+import android.support.v4.view.ViewCompat;
 import android.util.Base64;
 
 import java.io.ByteArrayInputStream;
@@ -9,19 +11,34 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Locale;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 public class StringUtil {
+    private static boolean mIsLayoutDirectionSet = false;
+    private static int mLayoutDirection = ViewCompat.LAYOUT_DIRECTION_LTR;
+
     public static String getFormatedSize(long bytes, boolean si) {
+        if (!mIsLayoutDirectionSet) {
+            mIsLayoutDirectionSet = true;
+            try {
+                mLayoutDirection = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault());
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
+        final boolean isLTR = mLayoutDirection != ViewCompat.LAYOUT_DIRECTION_RTL;
         int unit = si ? 1000 : 1024;
-        if (bytes < unit) return bytes + " B";
+        if (bytes < unit) return isLTR ? bytes + " B" : "B " + bytes;
         int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
-        return String.format("%.2f %sB", bytes / Math.pow(unit, exp), pre);
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + "";//(si ? "" : "i");
+        return isLTR ?
+                String.format("%.2f %sB", bytes / Math.pow(unit, exp), pre) :
+                String.format("%sB %.2f", pre, bytes / Math.pow(unit, exp));
     }
 
-    
     public static String base64Encode(String data) {
         return base64Encode(data.getBytes(Charset.forName("UTF-8")));
     }
