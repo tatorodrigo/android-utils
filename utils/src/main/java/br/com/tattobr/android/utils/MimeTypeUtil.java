@@ -5,6 +5,17 @@ import android.webkit.MimeTypeMap;
 import java.io.File;
 
 public class MimeTypeUtil {
+    private static String getMimeTypeFromExtension(String extension) {
+        if ("ogg".equalsIgnoreCase(extension) || "opus".equalsIgnoreCase(extension) ||
+                "oga".equalsIgnoreCase(extension) || "spx".equalsIgnoreCase(extension)) {
+            return "audio/ogg";
+        } else if ("ogv".equalsIgnoreCase(extension)) {
+            return "video/ogg";
+        } else {
+            return null;
+        }
+    }
+
     public static String getMimeType(String url) {
         String type = null;
         String extension = null;
@@ -14,6 +25,9 @@ public class MimeTypeUtil {
         }
         if (extension != null) {
             type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        if (type == null) {
+            type = getMimeTypeFromExtension(extension);
         }
         return type != null ? type.toLowerCase() : null;
     }
