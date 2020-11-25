@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/tatorodrigo/android-utils'
     gitUrl = 'https://github.com/tatorodrigo/android-utils.git'
 
-    libraryVersion = '0.2.0'
+    libraryVersion = '0.2.1'
 
     developerId = 'tatorodrigo'
     developerName = 'Rodrigo Tatto'
@@ -31,7 +31,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 30
         versionCode 1
-        versionName "0.2.0"
+        versionName "0.2.1"
     }
     buildTypes {
         release {
