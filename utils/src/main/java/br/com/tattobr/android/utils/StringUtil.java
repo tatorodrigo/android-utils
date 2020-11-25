@@ -1,7 +1,7 @@
 package br.com.tattobr.android.utils;
 
-import android.support.v4.text.TextUtilsCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.text.TextUtilsCompat;
+import androidx.core.view.ViewCompat;
 import android.util.Base64;
 
 import java.io.ByteArrayInputStream;
