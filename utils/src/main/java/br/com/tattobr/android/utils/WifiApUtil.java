@@ -8,7 +8,8 @@ import java.lang.reflect.Method;
 
 public class WifiApUtil {
     public static boolean isWifiApEnabled(Context context) {
-        WifiManager wifimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifimanager = (WifiManager) context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
         try {
             Method method = wifimanager.getClass().getDeclaredMethod("isWifiApEnabled");
             method.setAccessible(true);
@@ -19,7 +20,8 @@ public class WifiApUtil {
     }
 
     public static boolean setWifiApEnabled(Context context, boolean enabled) {
-        WifiManager wifimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifimanager = (WifiManager) context.getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
         try {
             boolean wasWifiApEnabled = isWifiApEnabled(context);
             if (wasWifiApEnabled != enabled) {

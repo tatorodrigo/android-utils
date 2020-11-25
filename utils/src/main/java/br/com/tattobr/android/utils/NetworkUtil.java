@@ -16,7 +16,8 @@ public class NetworkUtil {
         String ipAddressString;
 
         try {
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
             int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 
             // Convert little-endian to big-endianif needed

@@ -44,7 +44,8 @@ public class WifiP2pUtil {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return isWifiDirectSupportedByHardwareFeature(context);
         } else {
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
             return wifiManager.isP2pSupported() || isWifiDirectSupportedByHardwareFeature(context);
         }
     }
